@@ -6,6 +6,9 @@ import { loginForm } from '../../utils/const/authForm';
 
 
 export default function Login({ navigation }) {
+
+
+
     return (
         <View className='bg-white flex-1 items-center justify-center px-5'>
 
@@ -14,16 +17,13 @@ export default function Login({ navigation }) {
                     source={require('../../../assets/images/auth-logo.png')}
                 />
 
-            </View>
-            <View className='mt-5 w-full'>
-                <Input title={'E-mail Adresi'} />
-            </View>
+            </View>  
             <View className='w-full'>
                 <FlatList
                     data={loginForm}
                     renderItem={({ item }) => (
                         <View className='mt-5 w-full'>
-                            <Input title={item.title} icon={item.icon} />
+                            <Input item={item}  />
                         </View>
 
                     )}

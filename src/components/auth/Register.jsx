@@ -7,6 +7,9 @@ import { registerForm } from '../../utils/const/authForm';
 
 
 export default function Register({navigation}) {
+   
+
+
     return (
         <View className='bg-white flex-1 items-center justify-center px-5'>
 
@@ -16,17 +19,13 @@ export default function Register({navigation}) {
                 />
 
             </View>
-            <View className='mt-5 w-full'>
-                <Input title={'E-mail Adresi'} />
-            </View>
             <View className='w-full'>
                 <FlatList
                     data={registerForm}
                     renderItem={({ item }) => (
                         <View className='mt-5 w-full'>
-                            <Input title={item.title} icon={item.icon} />
-                        </View>
-
+                            <Input item ={item} />
+</View>
                     )}
                     keyExtractor={item => item.id}
                 />
@@ -34,7 +33,7 @@ export default function Register({navigation}) {
 
 
             <View className='mt-5 w-full'>
-                <Button title={'Giriş Yap'} />
+                <Button title={'Kayıt Ol'} />
             </View>
 
             <View className='w-full mt-5 flex-row'>

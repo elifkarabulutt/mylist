@@ -24,6 +24,9 @@ export default function List() {
            <ListItem/>
            <ListItem/>
             </View>
+            <TouchableOpacity className='mt-[10px]'>
+                <Text className='text-center text-secondary text-[11px] underline'>Hedefini Gör</Text>
+            </TouchableOpacity>
         </Section>
     )
 }

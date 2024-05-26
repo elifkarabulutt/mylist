@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, Image, TouchableOpacity } from 'react-native'
 import { Feather } from '@expo/vector-icons';
-export default function Header() {
+export default function Header( {setModalVisible}) {
     return (
         <View className='bg-white flex-row justify-between p-[10px] items center'>
             <View className='flex-row gap-[7px] items center'>
@@ -16,7 +16,7 @@ export default function Header() {
                     <Text className='text-secondary'>Üye</Text>
                 </View>
             </View>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={()=>setModalVisible(true)}>
                 <View>
                     <View className='relative w-[36px] h-[36px] bg-[#F8F9FA] justify-center items-center rounded-full'>
                         <Feather name="bell" size={20} color="#343A40" />

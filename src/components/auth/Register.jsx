@@ -1,14 +1,25 @@
-import { Text, View,TouchableOpacity,FlatList,Image} from 'react-native';
-import React from 'react';
+import { Text, View, TouchableOpacity, FlatList, Image } from 'react-native';
+import React, { useReducer, useState } from 'react';
 import Input from '../shared/Input';
 import Button from '../shared/Button';
 import { registerForm } from '../../utils/const/authForm';
+import { inputReducer } from '../../reducer/inputReducer';
+import { registerWithEmailAndPassword } from '../../auth';
+
+export default function Register({ navigation }) {
+    const initialState = {
+        email: '',
+        password: '',
+        rpassword: ''
+    }
 
 
+    const [state, dispatch] = useReducer(inputReducer, initialState);
+    const registerApp = () => {
+        const userData = registerWithEmailAndPassword(state.email, state.password);
+        // console.log("User Data:",userData);
 
-export default function Register({navigation}) {
-   
-
+    }
 
     return (
         <View className='bg-white flex-1 items-center justify-center px-5'>
@@ -24,17 +35,17 @@ export default function Register({navigation}) {
                     data={registerForm}
                     renderItem={({ item }) => (
                         <View className='mt-5 w-full'>
-                            <Input item ={item} />
-</View>
+                            <Input item={item} dispatch={dispatch} state={state} />
+                        </View>
                     )}
                     keyExtractor={item => item.id}
                 />
             </View>
 
 
-            <View className='mt-5 w-full'>
+            <TouchableOpacity onPress={registerApp} className='mt-5 w-full'>
                 <Button title={'Kayıt Ol'} />
-            </View>
+            </TouchableOpacity>
 
             <View className='w-full mt-5 flex-row'>
                 <Text className='text-primary'>Yoksa bir hesabınız mı var?</Text>

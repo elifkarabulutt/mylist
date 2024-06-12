@@ -1,20 +1,50 @@
 import { Text, View, Image, TouchableOpacity, FlatList } from 'react-native';
-import React from 'react';
+import React, { useReducer } from 'react';
 import Input from '../shared/Input';
 import Button from '../shared/Button';
 import { loginForm } from '../../utils/const/authForm';
-import { setLoader } from '../../redux/generalSlice';
-import { useDispatch } from 'react-redux';
+import { setLoader, setErrorMessage } from '../../redux/generalSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { inputReducer } from '../../reducer/inputReducer';
+import { loginWithEmailAndPassword } from '../../auth';
+import { errorMessages } from '../../utils/const/errorHandling';
+import ErrorInfo from '../messageHandling/ErrorInfo';
+import { validation } from '../../validation';
 
 export default function Login({ navigation }) {
 
-const dispatch=useDispatch();
+    const reduxDispatch = useDispatch();
+    const { errorMessage } = useSelector((state) => state.general);
 
+    const initialState = {
+        email: '',
+        password: '',
+    }
 
-const changePage=()=>{
-    dispatch(setLoader());
-    navigation.navigate('Register');
-}
+    const [state, dispatch] = useReducer(inputReducer, initialState);
+
+    const loginApp = async () => {
+        try {
+
+            const validationResponse = await validation(state);
+             console.log("Validation Response:",validationResponse);
+
+            if (validationResponse) {
+                reduxDispatch(setLoader());
+                await loginWithEmailAndPassword(state.email, state.password);
+           
+            
+            }
+
+            else {
+                reduxDispatch(setErrorMessage({ statusCode: true,[validationResponse.message]:validationResponse.message}));
+            }
+        }
+
+        catch (error) {
+            reduxDispatch(setErrorMessage(errorMessages(error.code)));
+        }
+    }
 
     return (
         <View className='bg-white flex-1 items-center justify-center px-5'>
@@ -24,13 +54,13 @@ const changePage=()=>{
                     source={require('../../../assets/images/auth-logo.png')}
                 />
 
-            </View>  
+            </View>
             <View className='w-full'>
                 <FlatList
                     data={loginForm}
                     renderItem={({ item }) => (
                         <View className='mt-5 w-full'>
-                            <Input item={item}  />
+                            <Input item={item} dispatch={dispatch} state={state} />
                         </View>
 
                     )}
@@ -39,7 +69,7 @@ const changePage=()=>{
             </View>
 
 
-            <TouchableOpacity onPress={changePage} className='mt-5 w-full'>
+            <TouchableOpacity onPress={loginApp} className='mt-5 w-full'>
                 <Button title={'Giriş Yap'} />
             </TouchableOpacity>
 
@@ -49,6 +79,10 @@ const changePage=()=>{
                     <Text className='font-[600] ml-[7px] text-primary underline'>Kayıt Olun</Text>
                 </TouchableOpacity>
             </View>
+
+            {
+                errorMessage.statusCode && <ErrorInfo errorMessage={errorMessage} />
+            }
 
 
         </View>

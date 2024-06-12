@@ -1,26 +1,23 @@
 import { Text, View, TextInput, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import {setUserValidationInput } from '../../redux/userSlice';
+import { setUserValidationInput } from '../../redux/userSlice';
 
-export default function Input({ item: { title, icon, isSecure = false, secureIcon, type }}) {
-    const user=useSelector((state)=>state.user);
+export default function Input({ item: { title, icon, isSecure = false, secureIcon, type }, dispatch,state }) {
+    //const user=useSelector((state)=>state.user);
     const [isVisible, setIsVisible] = useState(true);
-    const dispatch=useDispatch();
-    
+    //const dispatch=useDispatch();
+
     const handleChangeVisible = () => {
         setIsVisible(!isVisible);
     }
 
     const changeFormInfo = (type, value) => {
-      //  setFormInfo((prevList) => ({ ...prevList, [name]: value }))
-      dispatch (setUserValidationInput(
-        {
-            type,
-            value,
-        }
-      ));
-
+        //  setFormInfo((prevList) => ({ ...prevList, [name]: value }))
+        dispatch( {
+                type,
+                value,
+            });
     }
     return (
         <>
@@ -32,8 +29,9 @@ export default function Input({ item: { title, icon, isSecure = false, secureIco
                         <TextInput className='h-full px-[37px] text-[13px]'
                             secureTextEntry={isVisible}
                             placeholder={title}
+                            selectionColor={'#343A40'}
                             onChangeText={(value) => { changeFormInfo(type, value) }}
-                            value={user[type]}
+                            value={state[type]}
 
                         />
                         <Text className='text-[11px]text-primary absolute -top-[8px] left-[10px]bg-white 
@@ -55,12 +53,13 @@ export default function Input({ item: { title, icon, isSecure = false, secureIco
                         <View className='absolute left-[10px] top-[12px]'>{icon}</View>
                         <TextInput className='h-full px-[37px] text-[13px]'
                             placeholder={title}
-                            onChangeText={(value)=>{changeFormInfo(type,value)}}
-                           value={user[type]}
+                            selectionColor={'#343A40'}
+                        onChangeText={(value) => { changeFormInfo(type, value) }}
+                            value={state[type]}
 
                         />
                         <Text className='text-[11px]text-primary absolute -top-[8px] left-[10px]bg-white 
-        px-[10px] border-1-[1px] border-r-[1px]border-border'>{title}</Text>
+                     px-[10px] border-1-[1px] border-r-[1px]border-border'>{title}</Text>
                     </View>
             }
 

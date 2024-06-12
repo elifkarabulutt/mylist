@@ -1,6 +1,6 @@
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { HomeScreen, TaskScreen, Profile, AddTaskScreen, CompletedScreen } from '../screen';
+import { HomeScreen, TaskScreen, Profile, AddTaskScreen, CompletedScreen, PremiumScreen } from '../screen';
 import { NavigationContainer } from '@react-navigation/native';
 import { AntDesign, FontAwesome5, Entypo, MaterialIcons } from '@expo/vector-icons';
 import{Text} from 'react-native';
@@ -11,7 +11,7 @@ const Tab = createBottomTabNavigator();
 export default function UserStack() {
   return (
     <NavigationContainer>
-      <Tab.Navigator screenOptions={{headerShown:false,tabBarShowLabel:false}}>
+      <Tab.Navigator  screenOptions={{headerShown:false,tabBarShowLabel:false}}>
         <Tab.Screen name="Home" component={HomeScreen}
           options={{
             tabBarLabel: ({ focused }) => (

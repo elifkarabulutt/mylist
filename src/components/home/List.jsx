@@ -1,11 +1,29 @@
-import { Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import { Text, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { Feather } from '@expo/vector-icons';
 import Section from '../shared/Section';
 import ListItem from '../shared/ListItem';
+import Modal from '../shared/Modal';
+import Goal from './Goal';
+import { getTasks } from '../../taskProcess/taskProcess';
 
 
 export default function List() {
+    const [modalVisible, setModalVisible] = useState(false);
+
+    const[taskList,setTaskList]=useState([]);
+    
+    useEffect(()=>{
+        getTaskList();
+        }, [])
+
+    const getTaskList=async ()=>{
+        const tasks =await getTasks();
+        tasks.forEach(doc=>{
+            setTaskList(prevList=>[...prevList,doc.data()])
+        })
+    }
+
     return (
         <Section>
 
@@ -19,14 +37,20 @@ export default function List() {
 
             <View className='mt-[10px]'> 
 
-           <ListItem/>
-           <ListItem/>
-           <ListItem/>
-           <ListItem/>
+          {taskList.map((item,index)=>(
+            <View key ={index}>
+                <ListItem item={item}/>
             </View>
-            <TouchableOpacity className='mt-[10px]'>
+          ))}
+            </View>
+            <TouchableOpacity className='mt-[10px]' onPress={()=>setModalVisible(true)}>
                 <Text className='text-center text-secondary text-[11px] underline'>Hedefini Gör</Text>
             </TouchableOpacity>
+
+            <Modal setModalVisible={setModalVisible}modalVisible={modalVisible}>
+                <Goal setModalVisible={setModalVisible}/>
+
+            </Modal>
         </Section>
     )
 }
